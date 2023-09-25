@@ -6,4 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface IEditorsService {
     Page<Editors> getAll(String name, Pageable pageable);
+
+    Editors getEditor(String username);
 }

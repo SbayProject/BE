@@ -21,4 +21,9 @@ public class EditorsService implements IEditorsService{
 
         }
     }
+
+    @Override
+    public Editors getEditor(String username) {
+        return iEditorsRepository.findByUsers_Username(username);
+    }
 }

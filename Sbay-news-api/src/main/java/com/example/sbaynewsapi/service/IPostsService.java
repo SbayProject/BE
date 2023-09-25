@@ -13,4 +13,6 @@ public interface IPostsService {
     Page<Posts> getAllUser(String type, String title, Pageable pageable);
 
     Page<Posts> getAllByEditor(Editors editors,String type, String title, Pageable pageable);
+
+    Posts getDetailPost(Integer idPost);
 }

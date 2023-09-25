@@ -62,4 +62,9 @@ public class PostService implements IPostsService{
             }
         }
     }
+
+    @Override
+    public Posts getDetailPost(Integer idPost) {
+        return iPostsRepository.findById(idPost).get();
+    }
 }

@@ -53,4 +53,12 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/detail/{idPost}")
+    public ResponseEntity<Posts> getDetailPost(@PathVariable("idPost") Integer idPost){
+        try{
+            return new ResponseEntity<>(iPostsService.getDetailPost(idPost), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

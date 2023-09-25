@@ -2,15 +2,25 @@ package com.example.sbaynewsapi.service;
 
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.repository.IEditorsRepository;
+import com.example.sbaynewsapi.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class EditorsService implements IEditorsService{
     @Autowired
     private IEditorsRepository iEditorsRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private IUserRepository iUserRepository;
     @Override
     public Page<Editors> getAll(String name, Pageable pageable) {
         if (name.equals("null")){
@@ -25,5 +35,23 @@ public class EditorsService implements IEditorsService{
     @Override
     public Editors getEditor(String username) {
         return iEditorsRepository.findByUsers_Username(username);
+    }
+
+    @Override
+    public Editors getDetailEditor(Integer idEditor) {
+        return iEditorsRepository.findById(idEditor).get();
+    }
+    @Transactional
+    @Override
+    public ResponseEntity<?> createEditor(Editors editors) {
+        try {
+            String password = passwordEncoder.encode(editors.getUsers().getPassword());
+            editors.getUsers().setPassword(password);
+            iUserRepository.save(editors.getUsers());
+            iEditorsRepository.save(editors);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

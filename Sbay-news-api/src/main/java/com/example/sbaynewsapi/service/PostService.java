@@ -1,5 +1,6 @@
 package com.example.sbaynewsapi.service;
 
+import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
 import com.example.sbaynewsapi.repository.IPostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,40 @@ public class PostService implements IPostsService{
                 return iPostsRepository.getAll(name,"",pageable);
             }else {
                 return iPostsRepository.getAll(name,title,pageable);
+            }
+        }
+    }
+
+    @Override
+    public Page<Posts> getAllUser(String type, String title, Pageable pageable) {
+        if (type.equals("null")){
+            if (title.equals("null")){
+                return iPostsRepository.getAllUser("","",pageable);
+            }else {
+                return iPostsRepository.getAllUser("",title,pageable);
+            }
+        }else {
+            if (title.equals("null")){
+                return iPostsRepository.getAllUser(type,"",pageable);
+            }else {
+                return iPostsRepository.getAllUser(type,title,pageable);
+            }
+        }
+    }
+
+    @Override
+    public Page<Posts> getAllByEditor(Editors editors,String type, String title, Pageable pageable) {
+        if (type.equals("null")){
+            if (title.equals("null")){
+                return iPostsRepository.getAllByEditor(editors.getId(),"","",pageable);
+            }else {
+                return iPostsRepository.getAllByEditor(editors.getId(),"",title,pageable);
+            }
+        }else {
+            if (title.equals("null")){
+                return iPostsRepository.getAllByEditor(editors.getId(),type,"",pageable);
+            }else {
+                return iPostsRepository.getAllByEditor(editors.getId(),type,title,pageable);
             }
         }
     }

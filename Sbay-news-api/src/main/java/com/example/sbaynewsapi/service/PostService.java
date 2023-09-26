@@ -6,6 +6,8 @@ import com.example.sbaynewsapi.repository.IPostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -66,5 +68,15 @@ public class PostService implements IPostsService{
     @Override
     public Posts getDetailPost(Integer idPost) {
         return iPostsRepository.findById(idPost).get();
+    }
+
+    @Override
+    public ResponseEntity<?> createPost(Posts posts) {
+        try {
+            iPostsRepository.save(posts);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

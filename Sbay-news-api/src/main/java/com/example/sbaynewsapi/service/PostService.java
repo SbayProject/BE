@@ -79,4 +79,19 @@ public class PostService implements IPostsService{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public ResponseEntity<?> browsePost(Integer id) {
+        try {
+            Posts posts =iPostsRepository.findById(id).get();
+            if (posts !=null){
+                posts.setPublic(true);
+                iPostsRepository.save(posts);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

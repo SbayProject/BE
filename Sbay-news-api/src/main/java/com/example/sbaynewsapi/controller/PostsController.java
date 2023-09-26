@@ -97,4 +97,15 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    // duyet bai viet
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/browse")
+    public ResponseEntity<?> browsePost(@RequestBody Posts posts){
+        try{
+            return iPostsService.browsePost(posts.getId());
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

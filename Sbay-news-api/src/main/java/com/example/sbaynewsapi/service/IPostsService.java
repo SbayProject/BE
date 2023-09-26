@@ -18,4 +18,6 @@ public interface IPostsService {
     Posts getDetailPost(Integer idPost);
 
     ResponseEntity<?> createPost(Posts posts);
+
+    ResponseEntity<?> browsePost(Integer id);
 }

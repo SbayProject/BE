@@ -13,4 +13,6 @@ public interface IEditorsService {
     Editors getDetailEditor(Integer idEditor);
 
     ResponseEntity<?> createEditor(Editors editors);
+
+    ResponseEntity<?> deleteEditor(Integer id);
 }

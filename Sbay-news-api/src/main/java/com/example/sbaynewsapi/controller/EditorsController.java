@@ -115,4 +115,14 @@ public class EditorsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    // Xóa editor (admin)
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/deleteEditor")
+    public ResponseEntity<?> deleteEditor(@RequestBody EditorsDto editorsDto) {
+        try{
+            return iEditorsService.deleteEditor(editorsDto.getId());
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

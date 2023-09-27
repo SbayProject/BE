@@ -11,7 +11,7 @@ public class Posts {
     private Integer id;
     @Column(nullable = false,length = 50)
     private String title;
-    @Column(nullable = false,length = 50)
+    @Column(nullable = false)
     private String content;
     private String image;
     @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)

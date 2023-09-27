@@ -54,4 +54,20 @@ public class EditorsService implements IEditorsService{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public ResponseEntity<?> deleteEditor(Integer id) {
+        try {
+            Editors editors = iEditorsRepository.findById(id).get();
+            editors.setDelete(true);
+            iEditorsRepository.save(editors);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        }
+
+
+    }
 }

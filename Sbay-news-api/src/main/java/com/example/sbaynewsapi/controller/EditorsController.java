@@ -6,6 +6,7 @@ import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
 import com.example.sbaynewsapi.model.Roles;
 import com.example.sbaynewsapi.model.Users;
+import com.example.sbaynewsapi.service.EmailService;
 import com.example.sbaynewsapi.service.IEditorsService;
 import com.example.sbaynewsapi.service.IRolesService;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +31,8 @@ import java.time.LocalDateTime;
 public class EditorsController {
     @Autowired
     private IEditorsService iEditorsService;
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private IRolesService iRolesService;
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -81,7 +84,28 @@ public class EditorsController {
             users.setRoles(iRolesService.getRole());
             editors.setUsers(users);
             editors.setCreateDate(currentDateTime);
-            return iEditorsService.createEditor(editors);
+            iEditorsService.createEditor(editors);
+            emailService.sendMail(editors.getEmail(), "Đăng kí tài khoản Sbay", "Chào "+editors.getName()+", quản lý Sbay vừa đăng kí cho bạn một tài khoản để sử dụng trang web Sbay." +
+                    "\n" +
+                    "Đây là những thông tin đăng nhập của bạn:" + "\n" +
+                    "Tài khoản: " + editors.getUsers().getUsername() +
+                    "Mật khẩu: " + editors.getUsers().getPassword() +
+                    "\n" +
+                    "Chúc bạn làm việc thành công" +
+                     "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "---------------------------------------" + "\n" +
+                    "Name :Venco Fan\n" +
+                    "Mobile : 0782391943\n" +
+                    "Email : vencofan@gmail.com\n" +
+                    "Address :\u200B2\u200B80\u200B \u200BTrần Hưng Đạo\u200B streets, \u200BSơn Trà\u200B District, Da Nang");
+            return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

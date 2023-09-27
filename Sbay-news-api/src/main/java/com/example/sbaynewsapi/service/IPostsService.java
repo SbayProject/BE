@@ -20,4 +20,8 @@ public interface IPostsService {
     ResponseEntity<?> createPost(Posts posts);
 
     ResponseEntity<?> browsePost(Integer id);
+
+    ResponseEntity<?> deletePost(Posts posts);
+
+    List<Posts> getNewPost();
 }

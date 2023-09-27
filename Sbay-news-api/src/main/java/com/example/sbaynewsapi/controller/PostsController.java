@@ -1,11 +1,14 @@
 package com.example.sbaynewsapi.controller;
 
 import com.example.sbaynewsapi.config.JwtUserDetails;
+import com.example.sbaynewsapi.dto.EditorsDto;
 import com.example.sbaynewsapi.dto.PostsDto;
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
+import com.example.sbaynewsapi.model.Users;
 import com.example.sbaynewsapi.service.IEditorsService;
 import com.example.sbaynewsapi.service.IPostsService;
+import com.example.sbaynewsapi.service.IUsersService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*", allowCredentials = "true")
 @RestController
@@ -31,12 +35,22 @@ public class PostsController {
     private IPostsService iPostsService;
     @Autowired
     private IEditorsService iEditorsService;
+    @Autowired
+    private IUsersService iUsersService;
     // danh sách bài viết (tất cả)
     @GetMapping("")
     public ResponseEntity<Page<Posts>> getPosts(@RequestParam(value = "type",defaultValue = "null") String type,@RequestParam(value = "title",defaultValue = "null") String title, @RequestParam( value = "page",defaultValue = "0") Integer page){
         Pageable pageable = PageRequest.of(page,9);
         try{
             return new ResponseEntity<>(iPostsService.getAll(type,title,pageable), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/newPost")
+    public ResponseEntity<List<Posts>> getNewPost(){
+        try{
+            return new ResponseEntity<>(iPostsService.getNewPost(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -103,6 +117,30 @@ public class PostsController {
     public ResponseEntity<?> browsePost(@RequestBody Posts posts){
         try{
             return iPostsService.browsePost(posts.getId());
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    // Xóa post (admin , editor)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
+    @DeleteMapping("/deletePost")
+    public ResponseEntity<?> deletePost(@RequestBody Posts posts) {
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
+            Users users = iUsersService.findByUsername(principal.getUsername());
+            Posts posts1=iPostsService.getDetailPost(posts.getId());
+            if (users.getRoles().getRoleName().equals("ROLE_ADMIN")){
+                return iPostsService.deletePost(posts1);
+            }else {
+                Editors editors = iEditorsService.getEditor(principal.getUsername());
+                if (editors.getId()==posts1.getEditors().getId()){
+                    return iPostsService.deletePost(posts1);
+                }else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
+
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

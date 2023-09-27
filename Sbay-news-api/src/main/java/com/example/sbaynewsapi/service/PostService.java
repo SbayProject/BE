@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService implements IPostsService{
     @Autowired
@@ -93,5 +95,21 @@ public class PostService implements IPostsService{
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> deletePost(Posts posts) {
+        try {
+            posts.setDelete(true);
+            iPostsRepository.save(posts);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public List<Posts> getNewPost() {
+        return iPostsRepository.getNewPost();
     }
 }

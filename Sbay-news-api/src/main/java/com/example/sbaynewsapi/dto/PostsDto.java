@@ -1,38 +1,27 @@
-package com.example.sbaynewsapi.model;
+package com.example.sbaynewsapi.dto;
+
+import com.example.sbaynewsapi.model.Editors;
+import com.example.sbaynewsapi.model.TypePost;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "posts")
-public class Posts {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostsDto {
     private Integer id;
-    @Column(nullable = false,length = 50)
     private String title;
-    @Column(nullable = false)
     private String content;
     private String image;
-    @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)
     private boolean isPublic;
-    @Column(columnDefinition = "BIT DEFAULT 0", updatable = true)
     private boolean isDelete;
-    @Column(name = "create_date", columnDefinition = "DATETIME DEFAULT now()", updatable = false)
     private LocalDateTime createDate;
-    @Column(name = "update_date", columnDefinition = "DATETIME DEFAULT now()", updatable = true)
     private LocalDateTime updateDate;
-    @OneToOne
-    @JoinColumn(name = "editor_id")
     private Editors editors;
-    @OneToOne
-    @JoinColumn(name = "type_post_id")
     private TypePost typePost;
 
-    public Posts() {
+    public PostsDto() {
     }
 
-    public Posts(Integer id, String title, String content, String image, boolean isPublic, boolean isDelete, LocalDateTime createDate, LocalDateTime updateDate, Editors editors, TypePost typePost) {
+    public PostsDto(Integer id, String title, String content, String image, boolean isPublic, boolean isDelete, LocalDateTime createDate, LocalDateTime updateDate, Editors editors, TypePost typePost) {
         this.id = id;
         this.title = title;
         this.content = content;

@@ -6,7 +6,11 @@ import com.example.sbaynewsapi.repository.IPostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostService implements IPostsService{
@@ -61,5 +65,51 @@ public class PostService implements IPostsService{
                 return iPostsRepository.getAllByEditor(editors.getId(),type,title,pageable);
             }
         }
+    }
+
+    @Override
+    public Posts getDetailPost(Integer idPost) {
+        return iPostsRepository.findById(idPost).get();
+    }
+
+    @Override
+    public ResponseEntity<?> createPost(Posts posts) {
+        try {
+            iPostsRepository.save(posts);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> browsePost(Integer id) {
+        try {
+            Posts posts =iPostsRepository.findById(id).get();
+            if (posts !=null){
+                posts.setPublic(true);
+                iPostsRepository.save(posts);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> deletePost(Posts posts) {
+        try {
+            posts.setDelete(true);
+            iPostsRepository.save(posts);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
+    public List<Posts> getNewPost() {
+        return iPostsRepository.getNewPost();
     }
 }

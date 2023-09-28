@@ -2,8 +2,10 @@ package com.example.sbaynewsapi.controller;
 
 import com.example.sbaynewsapi.config.JwtTokenUtil;
 import com.example.sbaynewsapi.config.JwtUserDetails;
+import com.example.sbaynewsapi.model.Users;
 import com.example.sbaynewsapi.reponse.JwtRequest;
 import com.example.sbaynewsapi.reponse.JwtResponse;
+import com.example.sbaynewsapi.service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class UsersController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private IUsersService iUsersService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> loginAuthentication(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -31,10 +35,11 @@ public class UsersController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            Users users = iUsersService.findByUsername(authenticationRequest.getUsername());
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
-            GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
-            final String token = jwtTokenUtil.generateToken(principal.getUsername());
-            return ResponseEntity.ok(new JwtResponse(token, principal.getUsername(), authority != null ? authority.getAuthority() : null));
+//            GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
+            final String token = jwtTokenUtil.generateToken(users);
+            return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login fail!!");
         }

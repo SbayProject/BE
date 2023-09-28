@@ -1,7 +1,6 @@
 package com.example.sbaynewsapi.controller;
 
 import com.example.sbaynewsapi.config.JwtUserDetails;
-import com.example.sbaynewsapi.dto.EditorsDto;
 import com.example.sbaynewsapi.dto.PostsDto;
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*", allowCredentials = "true")
@@ -85,7 +83,7 @@ public class PostsController {
         }
     }
     // them moi bai viet
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @PostMapping("/createPost")
     public ResponseEntity<?> createPost(@RequestBody @Valid PostsDto postsDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){

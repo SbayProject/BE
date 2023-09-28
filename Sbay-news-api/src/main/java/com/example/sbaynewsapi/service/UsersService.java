@@ -15,12 +15,14 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class UsersService implements UserDetailsService, IUsersService {
     @Autowired
     private IUserRepository iUserRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users users = iUserRepository.findByUsername(username);

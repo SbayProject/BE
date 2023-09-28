@@ -14,20 +14,21 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class EditorsService implements IEditorsService{
+public class EditorsService implements IEditorsService {
     @Autowired
     private IEditorsRepository iEditorsRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private IUserRepository iUserRepository;
+
     @Override
     public Page<Editors> getAll(String name, Pageable pageable) {
-        if (name.equals("null")){
-            return iEditorsRepository.getAll("",pageable);
+        if (name.equals("null")) {
+            return iEditorsRepository.getAll("", pageable);
 
-        }else {
-            return iEditorsRepository.getAll(name,pageable);
+        } else {
+            return iEditorsRepository.getAll(name, pageable);
 
         }
     }
@@ -41,6 +42,7 @@ public class EditorsService implements IEditorsService{
     public Editors getDetailEditor(Integer idEditor) {
         return iEditorsRepository.findById(idEditor).get();
     }
+
     @Transactional
     @Override
     public ResponseEntity<?> createEditor(Editors editors) {
@@ -50,7 +52,7 @@ public class EditorsService implements IEditorsService{
             iUserRepository.save(editors.getUsers());
             iEditorsRepository.save(editors);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -63,7 +65,7 @@ public class EditorsService implements IEditorsService{
             iEditorsRepository.save(editors);
             return new ResponseEntity<>(HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         }

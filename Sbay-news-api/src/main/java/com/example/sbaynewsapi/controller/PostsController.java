@@ -122,7 +122,7 @@ public class PostsController {
 
     // Xóa post (admin , editor)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
-    @DeleteMapping("/deletePost")
+    @PatchMapping("/deletePost")
     public ResponseEntity<?> deletePost(@RequestBody Posts posts) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

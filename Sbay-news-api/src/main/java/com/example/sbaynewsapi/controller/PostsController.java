@@ -55,31 +55,26 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    // Quản lý danh sách bài viết (admin)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // Quản lý danh sách bài viết (admin,EDITOR)
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @GetMapping("/user")
     public ResponseEntity<Page<Posts>> getPostsUser(@RequestParam(value = "type",defaultValue = "null") String type,@RequestParam(value = "title",defaultValue = "null") String title, @RequestParam( value = "page",defaultValue = "0") Integer page){
         Pageable pageable = PageRequest.of(page,9);
         try{
-            return new ResponseEntity<>(iPostsService.getAllUser(type,title,pageable), HttpStatus.OK);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
+            Users users = iUsersService.findByUsername(principal.getUsername());
+            if (users.getRoles().getRoleName().equals("ROLE_ADMIN")){
+                return new ResponseEntity<>(iPostsService.getAllUser(type,title,pageable), HttpStatus.OK);
+            }else {
+                Editors editors = iEditorsService.getEditor(principal.getUsername());
+                return new ResponseEntity<>(iPostsService.getAllByEditor(editors,type,title,pageable), HttpStatus.OK);
+            }
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    // Quản lý danh sách bài viết (editor)
-//    @PreAuthorize("hasRole('ROLE_EDITOR')")
-    @GetMapping("/editor")
-    public ResponseEntity<Page<Posts>> getPostsEditor(@RequestParam(value = "type",defaultValue = "null") String type,@RequestParam(value = "title",defaultValue = "null") String title, @RequestParam( value = "page",defaultValue = "0") Integer page){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
-        Editors editors = iEditorsService.getEditor(principal.getUsername());
-        Pageable pageable = PageRequest.of(page,9);
-        try{
-            return new ResponseEntity<>(iPostsService.getAllByEditor(editors,type,title,pageable), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+
     // chi tiết bài viết (tất cả)
     @GetMapping("/detail/{idPost}")
     public ResponseEntity<Posts> getDetailPost(@PathVariable("idPost") Integer idPost){

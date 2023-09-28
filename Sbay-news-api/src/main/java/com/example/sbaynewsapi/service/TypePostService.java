@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TypePostService implements ITypePostService{
+public class TypePostService implements ITypePostService {
     @Autowired
     private ITypePostRepository iTypePostRepository;
+
     @Override
     public List<TypePost> getAll() {
         return iTypePostRepository.getAllByDeleteIsFalse();
@@ -22,12 +23,12 @@ public class TypePostService implements ITypePostService{
 
     @Override
     public ResponseEntity<?> createTypePost(TypePostDto typePostDto) {
-        try{
-            TypePost typePost =new TypePost();
-            BeanUtils.copyProperties(typePostDto,typePost);
+        try {
+            TypePost typePost = new TypePost();
+            BeanUtils.copyProperties(typePostDto, typePost);
             iTypePostRepository.save(typePost);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -39,7 +40,7 @@ public class TypePostService implements ITypePostService{
             typePost.setDelete(true);
             iTypePostRepository.save(typePost);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -48,11 +49,11 @@ public class TypePostService implements ITypePostService{
     public ResponseEntity<?> updateTypePost(TypePostDto typePostDto) {
         try {
             TypePost typePost = new TypePost();
-            BeanUtils.copyProperties(typePostDto,typePost);
+            BeanUtils.copyProperties(typePostDto, typePost);
             typePost.setDelete(false);
             iTypePostRepository.save(typePost);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

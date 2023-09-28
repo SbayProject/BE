@@ -1,5 +1,6 @@
 package com.example.sbaynewsapi.config;
 
+import com.example.sbaynewsapi.model.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -18,10 +19,12 @@ public class JwtTokenUtil {
     private final String secret = "bNjWIq9nGC";
 
 
-    public String generateToken(String username) {
+    public String generateToken(Users users) {
 
         return Jwts.builder()
-                .setSubject(username)
+                .claim("id",users.getId())
+                .claim("role",users.getRoles().getRoleName())
+                .setSubject(users.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)

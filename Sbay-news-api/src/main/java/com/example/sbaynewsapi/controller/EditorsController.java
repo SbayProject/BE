@@ -118,7 +118,7 @@ public class EditorsController {
 
     // Xóa editor (admin)
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/deleteEditor")
+    @PatchMapping("/deleteEditor")
     public ResponseEntity<?> deleteEditor(@RequestBody EditorsDto editorsDto) {
         try {
             return iEditorsService.deleteEditor(editorsDto.getId());

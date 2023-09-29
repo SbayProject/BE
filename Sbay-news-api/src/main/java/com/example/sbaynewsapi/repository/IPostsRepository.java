@@ -24,4 +24,7 @@ public interface IPostsRepository extends JpaRepository<Posts,Integer> {
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
             "order by p.create_date desc limit 4",nativeQuery = true)
     List<Posts> getNewPost();
+    @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
+            "where t.id =:id and p.is_delete=false order by p.create_date desc limit 4",nativeQuery = true)
+    List<Posts> getPostsByType(@Param("id") Integer id);
 }

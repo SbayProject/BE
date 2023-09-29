@@ -55,6 +55,14 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/getPostByType")
+    public ResponseEntity<List<Posts>> getPostByType(@RequestParam("id") Integer id) {
+        try {
+            return new ResponseEntity<>(iPostsService.getPostByType(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     // Quản lý danh sách bài viết (admin,EDITOR)
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")

@@ -128,4 +128,9 @@ public class PostService implements IPostsService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public List<Posts> getPostByType(Integer id) {
+        return iPostsRepository.findAllByTypePost_Id(id);
+    }
 }

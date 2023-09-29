@@ -27,4 +27,6 @@ public interface IPostsService {
     List<Posts> getNewPost();
 
     ResponseEntity<?> updatePost(PostsDto postsDto, Posts posts);
+
+    List<Posts> getPostByType(Integer id);
 }

@@ -39,7 +39,7 @@ public class TypePostController {
         }
     }
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/deleteTypePost")
+    @PatchMapping("/deleteTypePost")
     public ResponseEntity<?> deleteTypePost(@RequestBody TypePostDto typePostDto){
         try {
             return iTypePostService.deleteTypePost(typePostDto);

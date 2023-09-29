@@ -131,6 +131,6 @@ public class PostService implements IPostsService {
 
     @Override
     public List<Posts> getPostByType(Integer id) {
-        return iPostsRepository.findAllByTypePost_Id(id);
+        return iPostsRepository.getPostsByType(id);
     }
 }

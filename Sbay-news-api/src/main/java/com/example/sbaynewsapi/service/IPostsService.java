@@ -1,5 +1,6 @@
 package com.example.sbaynewsapi.service;
 
+import com.example.sbaynewsapi.dto.PostsDto;
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
 import org.springframework.data.domain.Page;
@@ -20,4 +21,12 @@ public interface IPostsService {
     ResponseEntity<?> createPost(Posts posts);
 
     ResponseEntity<?> browsePost(Integer id);
+
+    ResponseEntity<?> deletePost(Posts posts);
+
+    List<Posts> getNewPost();
+
+    ResponseEntity<?> updatePost(PostsDto postsDto, Posts posts);
+
+    List<Posts> getPostByType(Integer id);
 }

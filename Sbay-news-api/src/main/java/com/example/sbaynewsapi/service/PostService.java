@@ -133,4 +133,14 @@ public class PostService implements IPostsService {
     public List<Posts> getPostByType(Integer id) {
         return iPostsRepository.getPostsByType(id);
     }
+
+    @Override
+    public Page<Posts> getListPostsByType(Integer id, Pageable pageable) {
+        return iPostsRepository.getListPostsByType(id, pageable);
+    }
+
+    @Override
+    public Page<Posts> getListPostsByTypeSearch(Integer id, String title, Pageable pageable) {
+        return iPostsRepository.getListPostsByTypeSearch(id, title, pageable);
+    }
 }

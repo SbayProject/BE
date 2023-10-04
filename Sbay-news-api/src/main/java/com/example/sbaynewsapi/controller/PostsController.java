@@ -156,6 +156,10 @@ public class PostsController {
     // sua bai viet
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @PostMapping("/updatePost")
+
+
+
+    
     public ResponseEntity<?> updatePost(@RequestBody @Valid PostsDto postsDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

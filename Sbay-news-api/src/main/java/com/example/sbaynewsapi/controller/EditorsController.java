@@ -36,7 +36,7 @@ public class EditorsController {
     @Autowired
     private IRolesService iRolesService;
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<Editors>> getEditor(@RequestParam(value = "name", defaultValue = "null") String name, @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 9);
@@ -48,7 +48,7 @@ public class EditorsController {
     }
 
     // Xem thông tin cá nhân (Admin)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/detail/{idEditor}")
     public ResponseEntity<Editors> getDetailEditor(@PathVariable("idEditor") Integer idEditor) {
         try {
@@ -59,7 +59,7 @@ public class EditorsController {
     }
 
     // Trang cá nhân
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR')")
+    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR')")
     @GetMapping("/information")
     public ResponseEntity<Editors> getInformation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,7 +72,7 @@ public class EditorsController {
     }
 
     // Thêm editor (admin)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/createEditor")
     public ResponseEntity<?> createEditor(@RequestBody @Valid EditorsDto editorsDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -117,7 +117,7 @@ public class EditorsController {
     }
 
     // Xóa editor (admin)
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/deleteEditor")
     public ResponseEntity<?> deleteEditor(@RequestBody EditorsDto editorsDto) {
         try {

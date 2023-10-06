@@ -1,5 +1,6 @@
 package com.example.sbaynewsapi.service;
 
+import com.example.sbaynewsapi.dto.EditorsDto;
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.repository.IEditorsRepository;
 import com.example.sbaynewsapi.repository.IUserRepository;
@@ -71,5 +72,23 @@ public class EditorsService implements IEditorsService {
         }
 
 
+    }
+
+    @Override
+    public ResponseEntity<?> updateEditor(EditorsDto editorsDto) {
+        try {
+            Editors editors =iEditorsRepository.findById(editorsDto.getId()).get();
+            editors.setAddress(editorsDto.getAddress());
+            editors.setName(editorsDto.getName());
+            editors.setBirthday(editorsDto.getBirthday());
+            editors.setGender(editorsDto.getGender());
+            editors.setPhoneNumber(editorsDto.getPhoneNumber());
+            editors.setEmail(editorsDto.getEmail());
+            editors.setImage(editorsDto.getImage());
+            iEditorsRepository.save(editors);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

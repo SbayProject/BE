@@ -30,6 +30,5 @@ public interface IPostsService {
 
     List<Posts> getPostByType(Integer id);
 
-    Page<Posts> getListPostsByType(Integer id, Pageable pageable);
     Page<Posts> getListPostsByTypeSearch(Integer id,String title, Pageable pageable);
 }

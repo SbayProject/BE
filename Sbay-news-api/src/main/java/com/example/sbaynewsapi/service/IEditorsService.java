@@ -1,5 +1,6 @@
 package com.example.sbaynewsapi.service;
 
+import com.example.sbaynewsapi.dto.EditorsDto;
 import com.example.sbaynewsapi.model.Editors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,6 @@ public interface IEditorsService {
     ResponseEntity<?> createEditor(Editors editors);
 
     ResponseEntity<?> deleteEditor(Integer id);
+
+    ResponseEntity<?> updateEditor(EditorsDto editorsDto);
 }

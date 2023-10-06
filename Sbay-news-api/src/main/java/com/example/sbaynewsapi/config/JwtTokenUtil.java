@@ -19,10 +19,11 @@ public class JwtTokenUtil {
     private final String secret = "bNjWIq9nGC";
 
 
-    public String generateToken(Users users) {
+    public String generateToken(Users users,String image) {
 
         return Jwts.builder()
                 .claim("id",users.getId())
+                .claim("image",image)
                 .claim("role",users.getRoles().getRoleName())
                 .setSubject(users.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))

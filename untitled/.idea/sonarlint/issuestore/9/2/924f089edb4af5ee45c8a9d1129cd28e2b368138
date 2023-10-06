@@ -1,0 +1,10 @@
+
+7
+java:S1220""Move this file to a named package.8ÁÓ™ó¯1
+W	java:S125"<This block of commented-out lines of code should be removed.(ï­ãR8¾Ô™ó¯1
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(§îÎ÷ûÿÿÿÿ8¾Ô™ó¯1
+t
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(¦³°Äşÿÿÿÿ8ú¦·ó¯1
+J
+java:S1172"(Remove this unused method parameter "n".(¦³°Äşÿÿÿÿ8¾Ô™ó¯1
+]	java:S125["<This block of commented-out lines of code should be removed.(§¸Ÿÿùÿÿÿÿ8Í¨ºó¯1

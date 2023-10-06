@@ -39,8 +39,17 @@ public class PostsController {
     // danh sách bài viết (tất cả)
     @GetMapping("")
     public ResponseEntity<Page<Posts>> getPosts(@RequestParam(value = "type", defaultValue = "null") String type, @RequestParam(value = "title", defaultValue = "null") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 9);
+        Pageable pageable = PageRequest.of(page, 8);
         try {
+            boolean check =true;
+            for (int i = 0; i < title.length(); i++) {
+                if (title.charAt(i) != ' '){
+                    check=false;
+                }
+            }
+            if (check==true){
+                title="null";
+            }
             return new ResponseEntity<>(iPostsService.getAll(type, title, pageable), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

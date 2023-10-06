@@ -2,6 +2,7 @@ package com.example.sbaynewsapi.controller;
 
 import com.example.sbaynewsapi.config.JwtUserDetails;
 import com.example.sbaynewsapi.dto.EditorsDto;
+import com.example.sbaynewsapi.dto.PostsDto;
 import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Posts;
 import com.example.sbaynewsapi.model.Roles;
@@ -9,6 +10,7 @@ import com.example.sbaynewsapi.model.Users;
 import com.example.sbaynewsapi.service.EmailService;
 import com.example.sbaynewsapi.service.IEditorsService;
 import com.example.sbaynewsapi.service.IRolesService;
+import com.example.sbaynewsapi.service.IUsersService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,8 @@ public class EditorsController {
     private EmailService emailService;
     @Autowired
     private IRolesService iRolesService;
+    @Autowired
+    private IUsersService iUsersService;
 
     // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
@@ -122,6 +126,30 @@ public class EditorsController {
     public ResponseEntity<?> deleteEditor(@RequestBody EditorsDto editorsDto) {
         try {
             return iEditorsService.deleteEditor(editorsDto.getId());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR')")
+    @PatchMapping("/updateEditor")
+    public ResponseEntity<?> updateEditor(@RequestBody @Valid EditorsDto editorsDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
+            Users users = iUsersService.findByUsername(principal.getUsername());
+            if (users.getRoles().getRoleName().equals("ROLE_ADMIN")) {
+                return iEditorsService.updateEditor(editorsDto);
+            } else {
+                Editors editors =iEditorsService.getDetailEditor(editorsDto.getId());
+                if (users.getId() == editors.getUsers().getId()) {
+                    return iEditorsService.updateEditor(editorsDto);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ITypePostRepository extends JpaRepository<TypePost,Integer> {
-    @Query(value = "SELECT * from type_post where is_delete=false",nativeQuery = true)
-    List<TypePost> getAllByDeleteIsFalse();
+    @Query(value = "SELECT * from type_post as tp where tp.name like concat('%',:nameSearch,'%') and is_delete=false",nativeQuery = true)
+    List<TypePost> getAllByDeleteIsFalse(String nameSearch);
 }

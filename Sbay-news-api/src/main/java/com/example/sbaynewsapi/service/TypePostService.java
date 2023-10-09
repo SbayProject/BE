@@ -17,8 +17,8 @@ public class TypePostService implements ITypePostService {
     private ITypePostRepository iTypePostRepository;
 
     @Override
-    public List<TypePost> getAll() {
-        return iTypePostRepository.getAllByDeleteIsFalse();
+    public List<TypePost> getAll(String name) {
+        return iTypePostRepository.getAllByDeleteIsFalse(name);
     }
 
     @Override

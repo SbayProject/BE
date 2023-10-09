@@ -18,6 +18,7 @@ import java.util.List;
 public class TypePostController {
     @Autowired
     private ITypePostService iTypePostService;
+
     @GetMapping("")
     public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name){
         try{
@@ -26,33 +27,36 @@ public class TypePostController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/createTypePost")
-    public ResponseEntity<?> createTypePost(@RequestBody @Valid TypePostDto typePostDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
+    public ResponseEntity<?> createTypePost(@RequestBody @Valid TypePostDto typePostDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        try{
+        try {
             return iTypePostService.createTypePost(typePostDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/deleteTypePost")
-    public ResponseEntity<?> deleteTypePost(@RequestBody TypePostDto typePostDto){
+    public ResponseEntity<?> deleteTypePost(@RequestBody TypePostDto typePostDto) {
         try {
             return iTypePostService.deleteTypePost(typePostDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("updateTypePost")
-    public ResponseEntity<?> updateTypePost(@RequestBody TypePostDto typePostDto){
+    public ResponseEntity<?> updateTypePost(@RequestBody TypePostDto typePostDto) {
         try {
             return iTypePostService.updateTypePost(typePostDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

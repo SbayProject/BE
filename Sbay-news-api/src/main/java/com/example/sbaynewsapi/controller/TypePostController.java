@@ -19,9 +19,9 @@ public class TypePostController {
     @Autowired
     private ITypePostService iTypePostService;
     @GetMapping("")
-    public ResponseEntity<List<TypePost>> getPosts( ){
+    public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name){
         try{
-            return new ResponseEntity<>(iTypePostService.getAll(), HttpStatus.OK);
+            return new ResponseEntity<>(iTypePostService.getAll(name), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -39,7 +39,7 @@ public class EditorsController {
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<Editors>> getEditor(@RequestParam(value = "name", defaultValue = "null") String name, @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 9);
+        Pageable pageable = PageRequest.of(page, 3);
         try {
             return new ResponseEntity<>(iEditorsService.getAll(name, pageable), HttpStatus.OK);
         } catch (Exception e) {

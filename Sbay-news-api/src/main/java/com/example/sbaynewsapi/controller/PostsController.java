@@ -64,6 +64,17 @@ public class PostsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/typePostSearch")
+    public ResponseEntity<Page<Posts>> getListPostsByTypeSearch(@RequestParam(value = "id") Integer id, @RequestParam(value = "title", defaultValue = "") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
+        Pageable pageable = PageRequest.of(page, 4);
+        try {
+            return new ResponseEntity<>(iPostsService.getListPostsByTypeSearch(id, title, pageable), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/getPostByType")
     public ResponseEntity<List<Posts>> getPostByType(@RequestParam("id") Integer id) {
         try {
@@ -173,13 +184,13 @@ public class PostsController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
             Users users = iUsersService.findByUsername(principal.getUsername());
-            Posts posts =iPostsService.getDetailPost(postsDto.getId());
+            Posts posts = iPostsService.getDetailPost(postsDto.getId());
             if (users.getRoles().getRoleName().equals("ROLE_ADMIN")) {
-                return iPostsService.updatePost(postsDto,posts);
+                return iPostsService.updatePost(postsDto, posts);
             } else {
                 Editors editors = iEditorsService.getEditor(principal.getUsername());
                 if (editors.getId() == posts.getEditors().getId()) {
-                    return iPostsService.updatePost(postsDto,posts);
+                    return iPostsService.updatePost(postsDto, posts);
                 } else {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }

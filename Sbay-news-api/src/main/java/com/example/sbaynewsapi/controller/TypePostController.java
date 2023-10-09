@@ -20,10 +20,10 @@ public class TypePostController {
     private ITypePostService iTypePostService;
 
     @GetMapping("")
-    public ResponseEntity<List<TypePost>> getPosts() {
-        try {
-            return new ResponseEntity<>(iTypePostService.getAll(), HttpStatus.OK);
-        } catch (Exception e) {
+    public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name){
+        try{
+            return new ResponseEntity<>(iTypePostService.getAll(name), HttpStatus.OK);
+        }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

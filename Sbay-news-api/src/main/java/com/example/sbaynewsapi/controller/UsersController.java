@@ -43,10 +43,10 @@ public class UsersController {
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
 //            GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
             Editors editors = iEditorsService.getEditor(users.getUsername());
-            final String token = jwtTokenUtil.generateToken(users, editors.getImage());
+            final String token = jwtTokenUtil.generateToken(users, editors.getImage(), editors.getName());
             return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login fail!!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tài khoản hoặc mật khẩu không đúng");
         }
     }
 

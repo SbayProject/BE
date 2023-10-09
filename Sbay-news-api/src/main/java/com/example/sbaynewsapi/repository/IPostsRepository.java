@@ -9,22 +9,28 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface IPostsRepository extends JpaRepository<Posts,Integer> {
+public interface IPostsRepository extends JpaRepository<Posts, Integer> {
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') and  p.is_delete =false and p.is_public =true",nativeQuery = true)
-    Page<Posts> getAll(@Param("name") String s,@Param("title") String title, Pageable pageable);
+            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') and  p.is_delete =false and p.is_public =true", nativeQuery = true)
+    Page<Posts> getAll(@Param("name") String s, @Param("title") String title, Pageable pageable);
 
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') ",nativeQuery = true)
-    Page<Posts> getAllUser(@Param("name") String name,@Param("title") String title, Pageable pageable);
+            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') ", nativeQuery = true)
+    Page<Posts> getAllUser(@Param("name") String name, @Param("title") String title, Pageable pageable);
 
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') and p.editor_id=:id",nativeQuery = true)
-    Page<Posts> getAllByEditor(@Param("id") Integer id,@Param("name") String name,@Param("title") String title, Pageable pageable);
+            "where t.name like concat('%',:name,'%') and p.title like concat('%',:title,'%') and p.editor_id=:id", nativeQuery = true)
+    Page<Posts> getAllByEditor(@Param("id") Integer id, @Param("name") String name, @Param("title") String title, Pageable pageable);
+
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "order by p.create_date desc limit 4",nativeQuery = true)
+            "where t.id=:id and p.title like concat('%',:title,'%')", nativeQuery = true)
+    Page<Posts> getListPostsByTypeSearch(@Param("id") Integer id, @Param("title") String title, Pageable pageable);
+
+    @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
+            "order by p.create_date desc limit 4", nativeQuery = true)
     List<Posts> getNewPost();
+
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "where t.id =:id and p.is_delete=false order by p.create_date desc limit 4",nativeQuery = true)
+            "where t.id =:id and p.is_delete=false order by p.create_date desc limit 4", nativeQuery = true)
     List<Posts> getPostsByType(@Param("id") Integer id);
 }

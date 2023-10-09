@@ -23,9 +23,6 @@ public interface IPostsRepository extends JpaRepository<Posts, Integer> {
     Page<Posts> getAllByEditor(@Param("id") Integer id, @Param("name") String name, @Param("title") String title, Pageable pageable);
 
     @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
-            "where t.id=:id", nativeQuery = true)
-    Page<Posts> getListPostsByType(@Param("id") Integer id, Pageable pageable);
-    @Query(value = "select p.id,p.title,p.content ,p.image,p.is_public,p.is_delete ,p.create_date,p.update_date,p.editor_id,p.type_post_id from posts as p inner join type_post as t on t.id = p.type_post_id " +
             "where t.id=:id and p.title like concat('%',:title,'%')", nativeQuery = true)
     Page<Posts> getListPostsByTypeSearch(@Param("id") Integer id, @Param("title") String title, Pageable pageable);
 

@@ -66,9 +66,18 @@ public class PostsController {
     }
 
     @GetMapping("/typePostSearch")
-    public ResponseEntity<Page<Posts>> getListPostsByTypeSearch(@RequestParam(value = "id") Integer id, @RequestParam(value = "title", defaultValue = "") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
+    public ResponseEntity<Page<Posts>> getListPostsByTypeSearch(@RequestParam(value = "id") Integer id, @RequestParam(value = "title", defaultValue = "null") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 4);
         try {
+            boolean check =true;
+            for (int i = 0; i < title.length(); i++) {
+                if (title.charAt(i) != ' '){
+                    check=false;
+                }
+            }
+            if (check==true){
+                title="null";
+            }
             return new ResponseEntity<>(iPostsService.getListPostsByTypeSearch(id, title, pageable), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

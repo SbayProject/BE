@@ -136,6 +136,9 @@ public class PostService implements IPostsService {
 
     @Override
     public Page<Posts> getListPostsByTypeSearch(Integer id, String title, Pageable pageable) {
+        if (title.equals("null")){
+            return iPostsRepository.getListPostsByTypeSearch(id, "", pageable);
+        }
         return iPostsRepository.getListPostsByTypeSearch(id, title, pageable);
     }
 }

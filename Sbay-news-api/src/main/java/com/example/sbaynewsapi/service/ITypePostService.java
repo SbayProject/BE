@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ITypePostService {
-    List<TypePost> getAll();
+    List<TypePost> getAll(String name);
 
     ResponseEntity<?> createTypePost(TypePostDto typePostDto);
 

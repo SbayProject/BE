@@ -2,9 +2,11 @@ package com.example.sbaynewsapi.controller;
 
 import com.example.sbaynewsapi.config.JwtTokenUtil;
 import com.example.sbaynewsapi.config.JwtUserDetails;
+import com.example.sbaynewsapi.model.Editors;
 import com.example.sbaynewsapi.model.Users;
 import com.example.sbaynewsapi.reponse.JwtRequest;
 import com.example.sbaynewsapi.reponse.JwtResponse;
+import com.example.sbaynewsapi.service.IEditorsService;
 import com.example.sbaynewsapi.service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,8 @@ public class UsersController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private IUsersService iUsersService;
+    @Autowired
+    private IEditorsService iEditorsService;
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> loginAuthentication(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -38,10 +42,11 @@ public class UsersController {
             Users users = iUsersService.findByUsername(authenticationRequest.getUsername());
             JwtUserDetails principal = (JwtUserDetails) authentication.getPrincipal();
 //            GrantedAuthority authority = principal.getAuthorities().stream().findFirst().orElse(null);
-            final String token = jwtTokenUtil.generateToken(users);
+            Editors editors = iEditorsService.getEditor(users.getUsername());
+            final String token = jwtTokenUtil.generateToken(users, editors.getImage(), editors.getName());
             return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login fail!!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Tài khoản hoặc mật khẩu không đúng");
         }
     }
 

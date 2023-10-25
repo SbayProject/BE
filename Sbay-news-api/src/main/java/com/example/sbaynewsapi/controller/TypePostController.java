@@ -20,7 +20,7 @@ public class TypePostController {
     private ITypePostService iTypePostService;
 
     @GetMapping("")
-    public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name){
+    public ResponseEntity<List<TypePost>> getPosts(@RequestParam(defaultValue = "") String name){
         try{
             return new ResponseEntity<>(iTypePostService.getAll(name), HttpStatus.OK);
         }catch (Exception e){

@@ -43,7 +43,7 @@ public class EditorsController {
     // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
     public ResponseEntity<Page<Editors>> getEditor(@RequestParam(value = "name", defaultValue = "null") String name, @RequestParam(value = "page", defaultValue = "0") Integer page) {
-        Pageable pageable = PageRequest.of(page, 3);
+        Pageable pageable = PageRequest.of(page, 5);
         try {
             return new ResponseEntity<>(iEditorsService.getAll(name, pageable), HttpStatus.OK);
         } catch (Exception e) {
@@ -94,26 +94,35 @@ public class EditorsController {
             editors.setUsers(users);
             editors.setCreateDate(currentDateTime);
             iEditorsService.createEditor(editors);
-            emailService.sendMail(editors.getEmail(), "Đăng kí tài khoản Sbay", "Chào " + editors.getName() + ", quản lý Sbay vừa đăng kí cho bạn một tài khoản để sử dụng trang web Sbay." +
-                    "\n" +
-                    "Đây là những thông tin đăng nhập của bạn:" + "\n" +
-                    "Tài khoản: " + editors.getUsers().getUsername() +
-                    "\n" +
-                    "Mật khẩu: " + pass + "\n" +
-                    "Chúc bạn làm việc thành công" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "\n" +
-                    "---------------------------------------" + "\n" +
-                    "Name :Sbay Viet Nam\n" +
-                    "Mobile : 0782391943\n" +
-                    "Email : sbayintern2023@gmail.com\n" +
-                    "Address :\u200B03\u200B \u200BĐinh Thị Hòa\u200B streets, \u200BSơn Trà\u200B District, Da Nang");
+            String emailBody = "<html>" +
+                    "<head>" +
+                    "<style>" +
+                    "body { font-family: Arial, sans-serif; }" +
+                    "h1 { color: #337ab7; }" +
+                    "img { max-width: 200px; }" +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<h1>Đăng kí tài khoản Sbay</h1>" +
+                    "<p>Chào " + editors.getName() + ", quản lý Sbay vừa đăng kí cho bạn một tài khoản để sử dụng trang web Sbay.</p>" +
+                    "<p>Đây là những thông tin đăng nhập của bạn:</p>" +
+                    "<ul>" +
+                    "<li>Tài khoản: " + editors.getUsers().getUsername() + "</li>" +
+                    "<li>Mật khẩu: " + pass + "</li>" +
+                    "</ul>" +
+                    "<p>Chúc bạn làm việc thành công</p>" +
+                    "<br>" +
+                    "<img src='https://sbay.com.vn/upload/news/mau-logo-chinh-thuc-co-sologanjpg.jpg?h=261&v=qRREr6pn-dp5ACj2VJ80O2MU7DOiYq1vHAJqjTraJk0'>" +
+                    "<br>" +
+                    "<hr>" +
+                    "<p>Name: Sbay Viet Nam</p>" +
+                    "<p>Mobile: 0782391943</p>" +
+                    "<p>Email: sbayintern2023@gmail.com</p>" +
+                    "<p>Address: 03 Đinh Thị Hòa streets, Sơn Trà District, Da Nang</p>" +
+                    "</body>" +
+                    "</html>";
+
+            emailService.sendMail(editors.getEmail(), "Đăng kí tài khoản Sbay", emailBody);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

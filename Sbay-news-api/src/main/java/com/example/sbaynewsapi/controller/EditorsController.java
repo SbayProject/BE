@@ -63,7 +63,7 @@ public class EditorsController {
     }
 
     // Trang cá nhân
-    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR')")
+//     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EDITOR')")
     @GetMapping("/information")
     public ResponseEntity<Editors> getInformation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -33,7 +33,6 @@ public class Editors {
     @JoinColumn(name = "user_id")
     private Users users;
 
-
     public Editors() {
     }
 

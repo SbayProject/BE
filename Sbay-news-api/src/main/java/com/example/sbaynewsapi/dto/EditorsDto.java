@@ -3,7 +3,6 @@ package com.example.sbaynewsapi.dto;
 
 import com.example.sbaynewsapi.model.Users;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 

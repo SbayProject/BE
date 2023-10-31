@@ -1,1 +1,0 @@
-web: java -cp build/libs/sbaynewsapi.jar com.google.WebApp

@@ -1,1 +1,1 @@
-web: java -cp build/libs/sample-java-gradle.jar com.google.WebApp
+web: java -cp build/libs/sbaynewsapi.jar com.google.WebApp

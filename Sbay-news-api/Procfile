@@ -1,1 +1,1 @@
-web: java -cp -jar build/libs/sbay-news-api.jar com.example.sbaynewsapi.SbayNewsApiApplication
+web: java -cp build/libs/sbaynewsapi.jar com.example.sbaynewsapi.SbayNewsApiApplication

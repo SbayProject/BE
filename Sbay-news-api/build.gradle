@@ -1,16 +1,15 @@
 plugins {
 	id 'java'
-		id 'org.springframework.boot' version '2.7.16-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id("org.springframework.boot") version "2.4.5"
+	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-//	sourceCompatibility = '1.8'
-	sourceCompatibility = 13
-	targetCompatibility = 13
+	java.sourceCompatibility = JavaVersion.VERSION_1_8
+
 }
 springBoot {
 	mainClass.set("com.example.sbaynewsapi.SbayNewsApiApplication")

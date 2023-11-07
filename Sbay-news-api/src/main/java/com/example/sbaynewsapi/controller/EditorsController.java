@@ -150,7 +150,7 @@ public class EditorsController {
                 return iEditorsService.updateEditor(editorsDto);
             } else {
                 Editors editors =iEditorsService.getDetailEditor(editorsDto.getId());
-                if (users.getId() == editors.getUsers().getId()) {
+                if (users.getId().equals(editors.getUsers().getId())) {
                     return iEditorsService.updateEditor(editorsDto);
                 } else {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

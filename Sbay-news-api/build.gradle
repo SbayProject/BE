@@ -8,7 +8,9 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '1.8'
+//	sourceCompatibility = '1.8'
+	sourceCompatibility = 13
+	targetCompatibility = 13
 }
 springBoot {
 	mainClass.set("com.example.sbaynewsapi.SbayNewsApiApplication")

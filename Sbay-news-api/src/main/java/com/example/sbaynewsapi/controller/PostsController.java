@@ -41,14 +41,15 @@ public class PostsController {
     public ResponseEntity<Page<Posts>> getPosts(@RequestParam(value = "type", defaultValue = "null") String type, @RequestParam(value = "title", defaultValue = "null") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 8);
         try {
-            boolean check =true;
+            boolean check = true;
             for (int i = 0; i < title.length(); i++) {
-                if (title.charAt(i) != ' '){
-                    check=false;
+                if (title.charAt(i) != ' ') {
+                    check = false;
+                    break;
                 }
             }
-            if (check==true){
-                title="null";
+            if (check) {
+                title = "null";
             }
             return new ResponseEntity<>(iPostsService.getAll(type, title, pageable), HttpStatus.OK);
         } catch (Exception e) {
@@ -69,14 +70,15 @@ public class PostsController {
     public ResponseEntity<Page<Posts>> getListPostsByTypeSearch(@RequestParam(value = "id") Integer id, @RequestParam(value = "title", defaultValue = "null") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 4);
         try {
-            boolean check =true;
+            boolean check = true;
             for (int i = 0; i < title.length(); i++) {
-                if (title.charAt(i) != ' '){
-                    check=false;
+                if (title.charAt(i) != ' ') {
+                    check = false;
+                    break;
                 }
             }
-            if (check==true){
-                title="null";
+            if (check) {
+                title = "null";
             }
             return new ResponseEntity<>(iPostsService.getListPostsByTypeSearch(id, title, pageable), HttpStatus.OK);
         } catch (Exception e) {
@@ -94,7 +96,7 @@ public class PostsController {
     }
 
     // Quản lý danh sách bài viết (admin,EDITOR)
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @GetMapping("/user")
     public ResponseEntity<Page<Posts>> getPostsUser(@RequestParam(value = "type", defaultValue = "null") String type, @RequestParam(value = "title", defaultValue = "null") String title, @RequestParam(value = "page", defaultValue = "0") Integer page) {
         Pageable pageable = PageRequest.of(page, 9);
@@ -124,7 +126,7 @@ public class PostsController {
     }
 
     // them moi bai viet
-    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @PostMapping("/createPost")
     public ResponseEntity<?> createPost(@RequestBody @Valid PostsDto postsDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -147,7 +149,7 @@ public class PostsController {
     }
 
     // duyet bai viet
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/browse")
     public ResponseEntity<?> browsePost(@RequestBody Posts posts) {
         try {
@@ -170,7 +172,7 @@ public class PostsController {
                 return iPostsService.deletePost(posts1);
             } else {
                 Editors editors = iEditorsService.getEditor(principal.getUsername());
-                if (editors.getId() == posts1.getEditors().getId()) {
+                if (editors.getId().equals(posts1.getEditors().getId())) {
                     return iPostsService.deletePost(posts1);
                 } else {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -183,7 +185,7 @@ public class PostsController {
     }
 
     // sua bai viet
-    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')")
     @PostMapping("/updatePost")
     public ResponseEntity<?> updatePost(@RequestBody @Valid PostsDto postsDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -198,7 +200,7 @@ public class PostsController {
                 return iPostsService.updatePost(postsDto, posts);
             } else {
                 Editors editors = iEditorsService.getEditor(principal.getUsername());
-                if (editors.getId() == posts.getEditors().getId()) {
+                if (editors.getId().equals(posts.getEditors().getId())) {
                     return iPostsService.updatePost(postsDto, posts);
                 } else {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

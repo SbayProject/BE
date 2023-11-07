@@ -6,6 +6,7 @@ import com.example.sbaynewsapi.service.ITypePostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,15 +21,15 @@ public class TypePostController {
     private ITypePostService iTypePostService;
 
     @GetMapping("")
-    public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name){
-        try{
+    public ResponseEntity<List<TypePost>> getPosts(@RequestParam String name) {
+        try {
             return new ResponseEntity<>(iTypePostService.getAll(name), HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/createTypePost")
     public ResponseEntity<?> createTypePost(@RequestBody @Valid TypePostDto typePostDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -51,7 +52,7 @@ public class TypePostController {
         }
     }
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("updateTypePost")
     public ResponseEntity<?> updateTypePost(@RequestBody TypePostDto typePostDto) {
         try {
